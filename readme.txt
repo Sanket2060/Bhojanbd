@@ -71,3 +71,27 @@ Assignment: What does this.data field have in node JS????
 
 Chatgpt link:https://chat.openai.com/share/0cc64f01-4c9b-45e3-92bc-5657e5ea0d8a
 
+
+Video:Create user and video models with hooks(methods) and JWT
+-Created user and video models.Data modeled them
+-Got to know about schema's own methods(hooks):.pre and custom methods(by userSchema.method.method_name) 
+-Bcrypt:Used to store password in hashed(encrypted) form and match password for authentication.What it does is it  hashes our password and checks for
+-correct password between hashed password and pure password (for authentication purpose).
+-JWT:JWT is a bearer token.It's like a key(chabi),we give data to the one who has this key(chabi).It's used for access and 
+refresh tokens.
+-Mongoose Aggregate Paginate:
+
+-userSchema.pre("save",async function(next){      //arrow function can't be used.Why?? arrow function can't access schema(by this)
+    if (this.isModified("password")) return next();
+    this.password=bcrypt.hash(this.password,10);    //pre runs before data is set and this.password must be empty??
+    next();                                                //hash rounds-10    //next as parameter for middleware
+})
+
+userSchema.methods.isPasswordCorrect = async function(password){  //custom methods to schema
+       return   await  bcrypt.compare(password,this.password);  //this
+}
+
+-//pre and methods are from userSchema itself so they can have access to there data members.
+
+
+
