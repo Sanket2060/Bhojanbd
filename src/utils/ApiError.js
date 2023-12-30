@@ -3,7 +3,7 @@ class apierror extends Error{
         statusCode,
         message='Something went wrong',
         errors=[],
-        statck=""
+        stack=""
         )
         {
             super(message);   //???    super is used to call the constructor of the parent class (Error in this case).
@@ -14,8 +14,8 @@ class apierror extends Error{
             this.success=false
             this.errors=errors
 
-            if (statck){ //The code block you provided is responsible for handling the stack property of the custom ApiError class.
-                this.stack=statck
+            if (stack){ //The code block you provided is responsible for handling the stack property of the custom ApiError class.
+                this.stack=stack
             }
             else{
                 Error.captureStackTrace(this,this.constructor);

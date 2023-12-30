@@ -1,5 +1,7 @@
+import { app } from "./app.js";
 import connectDB from "./db/index.js";
 import dotenv from "dotenv"
+
 // require('dotenv').config({path:'./env'}) with require statement->runs fine but gives inconsistency
 dotenv.config({
     path:'./env'

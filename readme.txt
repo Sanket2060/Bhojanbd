@@ -95,3 +95,92 @@ userSchema.methods.isPasswordCorrect = async function(password){  //custom metho
 
 
 
+Video:How to upload files in Multer
+-Function to Upload on cloudanary 
+-Multer:To store files temporarily on server until it is uploaded or canceled to upload on cloudanary
+-Fs:Fs"file system"(from node JS) is used to link(add)  and Unlinking(deleting) video from our server
+-Middlewares: Jaa rahe ho kahi toh mujse milke jana  -Hitesh Chaudary sir ,chai aur code 
+  Chatgpt url:https://chat.openai.com/share/a80e7cc5-1b5f-471c-ac36-06204d76731f
+
+
+
+Video:HTTP crash course
+metadata:Data k bareme data
+-HTTP Headers->contains metadata:key value pair sent along with response and request
+Usecase:->Caching,authentication,manage state\
+    X-prefix->2012 (X-Deprecated)
+Types:->
+Request Headers->from client
+Response Headers->from server
+Representation Headers->in which form data is there->encoding/compression
+Payload headers->Data
+
+
+Most common headers->
+Accept:application/json
+User-agent
+Authorization
+Content-type
+Cookie
+Cache-control
+
+
+CORS(Cross Origin Resource Sharing):Defining at backend who can access the backend through url calling
+-Access Control Allow Origin
+-Access Control Allow credentials
+-Access Control Allow method
+
+
+Security
+->Cross-Origin-Embedded-Policy
+->Cross-Origin-Opener-Policy
+->Content-Security-Policy
+->X-XSS-Protection
+
+
+HTTP Methods:
+Basic set of operations that can be used to interact with server
+GET:retrieve a resource
+HEAD:No message body(response headers only)
+OPTIONS:what operations are available
+TRACE:loopback test(get same data)
+DELETE:remove a resource
+PUT:replace a resource
+POST:interact with a resource(mostly add)
+PATCH:change part of a resource
+
+
+
+HTTP Status Code:
+ 1XX:Informational
+ 2XX:Success
+ 3XX:Redirection
+ 4XX:Client Error
+ 5XX:Servor Error
+
+
+100->Continue               
+102->Processing                   
+200->Ok
+201->Created
+202->Accepted
+307->temporarily redirect
+308->permanently redirect     
+400->Bad request
+401->Unauthorized
+402->Payment required
+404->Not found
+500->Internal Server Error
+504->Gateway time out
+
+Link:https://chat.openai.com/share/5e71c113-9e98-4d96-a68e-bcd7c377f7f7
+
+
+Video:Complete guide for router and controller with debugging
+async handler understanding???->Understood link: https://chat.openai.com/share/405a9448-496a-4403-8d9e-37c49c4810e0
+-Understood how routing happens through multiple files
+-Used postman to hit the created route.
+-Sent json message and status(code) when hitting the route.
+app.get ->used to hit url
+app.use ->used to hit middleware
+Summary url:https://chat.openai.com/share/59f265e7-3a76-47a5-9bc4-8fe9d62276d3
