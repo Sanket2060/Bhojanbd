@@ -184,3 +184,19 @@ async handler understanding???->Understood link: https://chat.openai.com/share/4
 app.get ->used to hit url
 app.use ->used to hit middleware
 Summary url:https://chat.openai.com/share/59f265e7-3a76-47a5-9bc4-8fe9d62276d3
+
+
+Video:Logic builiding|Register controller
+-Always write algorithm for working.It builds logic and gives 'Divide and rule' to you.
+-Extracting data from frontend passed of form or body->req.body
+-throw new APIERROR(400,"fullname is required");
+-.some usuage
+-models can communicate with database (as they are from mongoose) and
+-queries on database
+-handling images
+-console.log properties to know more i.e. what it really offers
+---------------------------------------------------------------------------------------------------
+*Adding middleware for files(multer middleware) 
+*Checking to database through query (findOne )
+*Adding data to database via data model
+Refer to user.controller.js for all algorithm and for better understanding go for video 
