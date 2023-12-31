@@ -3,6 +3,7 @@ import { DB_NAME } from "../constants.js";
 
 const connectDB = async () => {
     try {
+        console.log(`${process.env.MongoDB_URI}/${DB_NAME}`);
         const connectionInstance = await mongoose.connect(`${process.env.MongoDB_URI}/${DB_NAME}`)
         console.log(`\n MongoDB connected ! DB host: ${connectionInstance.connection.host}`);
         console.log("Connection instance:",connectionInstance);  //hw-> connectionInstance is the result of the mongoose.connect() method, which returns a Mongoose connection instance

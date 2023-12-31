@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 
 // require('dotenv').config({path:'./env'}) with require statement->runs fine but gives inconsistency
 dotenv.config({
-    path:'./env'
+    path:'./.env'
 })
 connectDB()
 .then(()=>{

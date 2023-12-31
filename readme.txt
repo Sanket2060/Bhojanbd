@@ -200,3 +200,10 @@ Video:Logic builiding|Register controller
 *Checking to database through query (findOne )
 *Adding data to database via data model
 Refer to user.controller.js for all algorithm and for better understanding go for video 
+
+
+Video:How to use postman for backend
+->Sending data from body->formdata
+->How does codeflow works at backend?Like when is database connection made?What runs first when
+a route is hit??
+->
