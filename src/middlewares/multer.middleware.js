@@ -14,3 +14,5 @@ const storage = multer.diskStorage({  //diskStorage used over memory storage
   //To get knowledge of it: https://github.com/expressjs/multer
 
   export {upload}
+
+  

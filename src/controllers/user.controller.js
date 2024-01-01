@@ -10,7 +10,7 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
     
 
     //get data from frontend
-    const {username,email,fullname,password}=req.body;
+    const {username,email,fullName,password}=req.body;
     console.log("username",username);
 
     //validation-non empty
@@ -19,7 +19,7 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
     // }
 
     if
-    ([username, email, fullname, password].some((field) => field?.trim()) === '') //The some function is used to check if at least one element in the array satisfies the provided condition.
+    ([username, email, fullName, password].some((field) => field?.trim()) === '') //The some function is used to check if at least one element in the array satisfies the provided condition.
     //here if any of the fields equals '' then it throws error 
         {
             throw new ApiError(400,"No fields can't be empty");
@@ -39,11 +39,19 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
 
 
     //check for images,check for avatar(avatar required)
-    console.log("req.files:",req.files);
-    console.log("multer path:",req.files?.avatar[0]?.path);
-    const avatarLocalPath= req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.avatar[0]?.path;
+    // console.log("req.files:",req.files);
+    console.log("Before multer path");
+    console.log("Multer req files:",req.files);
+    console.log("multer path:",req.files?.avatar[0]?.path);  //if undefined whole statement undefined and not printed
+    const avatarLocalPath = req.files?.avatar[0]?.path;   // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
     //???multer middleware giving .files property to req.Where did `avatar` keyword come from???
+
+    // let coverImageLocalPath;
+    // if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+    //     coverImageLocalPath = req.files.coverImage[0].path
+    // }
+    
 
     if (!avatarLocalPath){
         throw new ApiError(400,"Avatar file is required");
@@ -54,12 +62,12 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
    const coverImage=await uploadOnCloudinary(coverImageLocalPath);
 
    if (!avatar){
-    throw new ApiError(400,"Avatar file is required");
+    throw new ApiError(500,"Avatar file is required");
 }
 
     //create user object-create entry in db
     const user=await User.create({
-        fullname,
+        fullName,
         avatar:avatar.url,
         coverImage:coverImage?.url||"",
         email,
@@ -68,7 +76,7 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
     })
 
 //first look user is created at database and remove password and refresh token field from response
-    const createdUser=User.findById(user._id).select(
+    const createdUser=await User.findById(user._id).select(
         "-password -refreshToken"        
     )
 

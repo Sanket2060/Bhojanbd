@@ -203,7 +203,27 @@ Refer to user.controller.js for all algorithm and for better understanding go fo
 
 
 Video:How to use postman for backend
-->Sending data from body->formdata
+->Sending data from body->formdata to api from postman
 ->How does codeflow works at backend?Like when is database connection made?What runs first when
-a route is hit??
-->
+a route is hit?? Links: https://chat.openai.com/share/b960e77f-0bb4-497d-aa0c-08b2a7df05f5
+->removing files from server even on success by fs.unlink
+->Using collections containing folder and making the url small
+-> ?. v/s no ?  //????????
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Mongodb queries:findOne(),Create(),findById()
