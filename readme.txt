@@ -211,6 +211,31 @@ a route is hit?? Links: https://chat.openai.com/share/b960e77f-0bb4-497d-aa0c-08
 -> ?. v/s no ?  //????????
 
 
+Video:Access Refresh Token,Middlewares and cookies in Backend
+Access token:short lived    Refresh token:long lived
+->Access token:for every access a token is created.//?????
+->Refresh token for not hitting password again and again until they are same in user and database
+
+User v/s user:Chatgpt links
+
+Doubt.jpeg //????? -->>Understood
+27:00  instance lisakexam tespaxi changes push garexam so hamro instance change huni vayena->Understood
+32:30 object??? user: with so many values
+  
+ Middlewares Special:req and res are objects and when middlewares are added properties to req and res also gets added.
+  Eg.multer is added as middleware we got req.files... .Also,cookieparser was added so we got res.cookie
+
+ Creating our own Middleware:
+ ->Just create function and add data to req.__variable or res.__variable to access it later.
+ ->Use the middleware in the routes.
+ ->Further learnt about JWT,verifying tokens
+-------------------------------------------------------------------------------------------------- 
+But access token or refresh token expiration not handeled yet
+If res is not used then,you can use _(underscore).
+
+Most important chatgpt links: 
+https://chat.openai.com/share/fb07f8e6-a370-46c3-b5b4-d786fcb4c15e
+https://chat.openai.com/share/3a514127-b285-4e26-8eb6-aeca5ff597de
 
 
 
@@ -222,8 +247,5 @@ a route is hit?? Links: https://chat.openai.com/share/b960e77f-0bb4-497d-aa0c-08
 
 
 
-
-
-
-
-//Mongodb queries:findOne(),Create(),findById()
+//Mongodb queries:findOne(),Create(),findById(),findByIdAndUpdate()
+//Mongodb operators: &&,||,$set

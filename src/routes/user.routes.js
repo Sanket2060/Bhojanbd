@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { registerUser } from "../controllers/user.controller.js";
+import { LoginUser, LogoutUser, registerUser } from "../controllers/user.controller.js";
 import {upload} from '../middlewares/multer.middleware.js'
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
   const router=Router();
   
@@ -17,6 +18,11 @@ import {upload} from '../middlewares/multer.middleware.js'
       }
     ])
     ,registerUser);  //on hitting  api/v1/users/register  execute  registerUser controller 
+  
+  router.route('/login').post(LoginUser);
+  
+  //secured routes Why secured??
+  router.route('/logout').post(verifyJWT,LogoutUser);
   
 
 

@@ -3,6 +3,28 @@ import {ApiError} from '../utils/ApiError.js'
 import { User } from "../models/user.model.js";
 import {uploadOnCloudinary} from '../utils/Cloudinary.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
+
+const generateAccessAndRefreshTokens=async (userId)=>{ //function to generate Tokens
+ try {
+    const user=await User.findById(userId);
+    const accessToken=user.generateAccessToken();
+    const refreshToken=user.generateRefreshToken();  
+    user.refreshToken=refreshToken; //we can change current database detail by database instance
+  await  user.save({validateBeforeSave:false}) //to save the changes on instance and validateBeforeSave tells the code 
+    //that not to follow validations (required and other requirements of model but just save the changed data)
+
+    return {accessToken,refreshToken};
+ } catch (error) {
+    throw new ApiError(500,"Something went wrong while generating access and refresh token");
+ }
+
+
+
+
+
+}
+
+
 const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako function lai try..catch ra async.. await dinxa so code ma feri feri lekhnu pardaina
     // res.status(200).json({  //res has these properties in it so we can use it
     //     message:'chai aur code'
@@ -96,6 +118,102 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
 
 
 
+
+
 })
 
-export  {registerUser}
+const LoginUser=asyncHandler(async(req,res)=>{
+    //get data from req.body (req->body data)
+    const {email,username,password}=req.body;
+    if (!email || !username)
+    {
+        throw new Error("Email or username is required");
+    }
+
+    //find user by username or email
+   const user=await User.findOne({
+        $or:[{username},{email}]
+    })
+
+    if (!user){
+        throw new Error(404,"user with this username doesn't exists");
+    }
+
+
+    //check password
+   const isPasswordValid=await user.methods.isPasswordCorrect(password);  //????why small user and not Capital
+   //???check for this.password at this function
+   if (!user){
+    throw new Error(404,"Incorrect password");
+}
+
+   
+   //Generate  Access and refresh token
+   const {accessToken,refreshToken}=await generateAccessAndRefreshTokens(user._id);  //id from the instance of the trying to  login account
+
+
+   //send cookie
+    const loggedInUser=User.findById(user._id).select(  //don't get password and refresh token from database
+        "-password -refreshToken"
+    );
+    
+    const options={   //only modifyable by server not by browser by anyone
+        httpOnly:true,
+        secure:true
+    }
+
+    return res  //cookieParser middleware added hence res object got cookie property
+    .status(200)
+    .cookie("accessToken",accessToken,options) //accessToken Cookie
+    .cookie("refreshToken",refreshToken,options) //refreshToken Cookie
+    .json(
+        new ApiResponse(200,
+            {
+                user:loggedInUser,accessToken,refreshToken  //????{} missing-> sending multiple at a time
+        },
+         "User logged in successfully"
+        )
+    )
+
+    
+
+
+   
+   
+
+
+
+
+
+})
+const LogoutUser=asyncHandler((req,_)=>{
+    User.findByIdAndUpdate(
+        req.user._id,      //user sent by verifyJWT middleware
+        {
+            $set:{
+                refreshToken:undefined   //set refreshToken on database to undefined
+            },    
+        },
+        {
+            new:true  //when refreshToken is set then when retrieved data from here as const user= then give new data
+        }
+        
+    )
+    
+    //set cookies on browser to undefined
+    const options={   //only modifyable by server not by browser by anyone
+        httpOnly:true,
+        secure:true
+    }
+    res.status
+    .clearCookie("accessToken",options)
+    .clearCookie("refreshToken",options)
+    .json(new ApiResponse(200,{},"User logged out sucessfully"))
+    
+
+
+
+})
+
+
+export  {registerUser,LoginUser,LogoutUser}
