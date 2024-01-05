@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import  JsonWebToken  from "jsonwebtoken";  //???
+import  jwt  from "jsonwebtoken";  //???
 import bcrypt from "bcrypt"
 const userSchema=new Schema({
     username:{
@@ -53,9 +53,11 @@ const userSchema=new Schema({
 },{timestamps:true})
 
 userSchema.pre("save",async function(next){      //arrow function can't be used.Why?? arrow function can't access schema(by this)
-    if (this.isModified("password")) return next();
-    this.password=bcrypt.hash(this.password,10);    //pre runs before data is set and this.password must be empty??
+    if (!this.isModified("password")) return next(); //???this.isModified is method of?????
+    this.password=await bcrypt.hash(this.password,10);    //pre runs before data is set and this.password must be empty??
+    console.log("Encrypted password:",this.password);
     next();                                                //hash rounds-10    //next as parameter for middleware
+    //??bcrypt also should be awaited??
 })
 
 userSchema.methods.isPasswordCorrect = async function(password){  //custom methods to schema

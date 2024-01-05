@@ -3,7 +3,6 @@ import {ApiError} from '../utils/ApiError.js'
 import { User } from "../models/user.model.js";
 import {uploadOnCloudinary} from '../utils/Cloudinary.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
-
 const generateAccessAndRefreshTokens=async (userId)=>{ //function to generate Tokens
  try {
     const user=await User.findById(userId);
@@ -124,27 +123,30 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
 
 const LoginUser=asyncHandler(async(req,res)=>{
     //get data from req.body (req->body data)
-    const {email,username,password}=req.body;
-    if (!email || !username)
+    const {username,email,fullName,password}=req.body;
+    console.log("username from login User:",username);
+ if (!email && !username)
     {
-        throw new Error("Email or username is required");
+        throw new ApiError("Email or username is required");
     }
 
     //find user by username or email
    const user=await User.findOne({
         $or:[{username},{email}]
     })
-
+    console.log("user:",user);
     if (!user){
-        throw new Error(404,"user with this username doesn't exists");
+        throw new ApiError(404,"user with this username doesn't exists");
     }
 
 
     //check password
-   const isPasswordValid=await user.methods.isPasswordCorrect(password);  //????why small user and not Capital
+    console.log("Password:",password);
+   const isPasswordValid=await user.isPasswordCorrect(password);  //????why small user and not Capital
+   console.log("Password valid:",isPasswordValid);
    //???check for this.password at this function
-   if (!user){
-    throw new Error(404,"Incorrect password");
+   if (!isPasswordValid){
+    throw new ApiError(404,"Incorrect password");
 }
 
    
@@ -155,7 +157,7 @@ const LoginUser=asyncHandler(async(req,res)=>{
    //send cookie
     const loggedInUser=User.findById(user._id).select(  //don't get password and refresh token from database
         "-password -refreshToken"
-    );
+    ).lean();
     
     const options={   //only modifyable by server not by browser by anyone
         httpOnly:true,
@@ -168,9 +170,9 @@ const LoginUser=asyncHandler(async(req,res)=>{
     .cookie("refreshToken",refreshToken,options) //refreshToken Cookie
     .json(
         new ApiResponse(200,
-            {
-                user:loggedInUser,accessToken,refreshToken  //????{} missing-> sending multiple at a time
-        },
+        //     {
+        //         user:loggedInUser,accessToken,refreshToken  //????{} missing-> sending multiple at a time???
+        // },
          "User logged in successfully"
         )
     )
@@ -186,7 +188,7 @@ const LoginUser=asyncHandler(async(req,res)=>{
 
 
 })
-const LogoutUser=asyncHandler((req,_)=>{
+const LogoutUser=asyncHandler((req,res)=>{
     User.findByIdAndUpdate(
         req.user._id,      //user sent by verifyJWT middleware
         {
@@ -205,7 +207,8 @@ const LogoutUser=asyncHandler((req,_)=>{
         httpOnly:true,
         secure:true
     }
-    res.status
+    res.
+    status(200)
     .clearCookie("accessToken",options)
     .clearCookie("refreshToken",options)
     .json(new ApiResponse(200,{},"User logged out sucessfully"))

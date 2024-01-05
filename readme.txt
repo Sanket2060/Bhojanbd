@@ -241,7 +241,7 @@ https://chat.openai.com/share/3a514127-b285-4e26-8eb6-aeca5ff597de
 
 
 
-
+Discord doubt
 
 
 
