@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import  jwt  from "jsonwebtoken";  //???
-import { User } from "../models/user.model.js";
+import { Donor } from "../models/donor.model.js";
+import { Distributor } from "../models/distributor.model.js";
 import {ApiError} from '../utils/ApiError.js'
 export const verifyJWT=asyncHandler(async(req,res,next)=>{
 try {
@@ -16,7 +17,9 @@ try {
         //decrypt the token
        const decodedToken=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET); //the decoded token has all data sent during encoding of token
        //find user from token on database to verify
-       const user=await User.findById(decodedToken?._id).select("-password -refreshToken");  //_id was given when token  was made(encryption happened)
+       const user=await Donor.findById(decodedToken?._id).select("-password -refreshToken") ||
+                        Distributor.findById(decodedToken?._id).select("-password -refreshToken")                                          
+       //_id was given when token  was made(encryption happened)
        if (!user){
             throw new ApiError(401,"Invalid access token"); //??401 as unauthorized error???
        }
@@ -24,7 +27,7 @@ try {
        next()
        
 } catch (error) {
-    
+    throw new ApiError(500,"Can't validate from access token at the moment");
 }
 
 

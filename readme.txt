@@ -249,3 +249,5 @@ Discord doubt
 
 //Mongodb queries:findOne(),Create(),findById(),findByIdAndUpdate()
 //Mongodb operators: &&,||,$set
+//     user.refreshToken=refreshToken; //we can change current database detail by database instance
+//   await  user.save({validateBeforeSave:false}) //to save the changes on instance and validateBeforeSave tells the code 

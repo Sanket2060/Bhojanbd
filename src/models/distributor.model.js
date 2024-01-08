@@ -19,17 +19,15 @@ const distributorSchema=new Schema({
     },
     name:{
         type:String,
-        required:true,
         trim:true,
         index:true
     },
     avatar:{
         type:String,  //cloudnary(alternative to AWS) url to be used
-        required:true,
     },
-    coverImage:{
-        type:String,  //cloudnary(alternative to AWS) url to be used
-    },
+    // coverImage:{
+    //     type:String,  //cloudnary(alternative to AWS) url to be used
+    // },
     // watchHistory:[
     //     {
     //         type:Schema.Types.ObjectId,
@@ -47,21 +45,17 @@ const distributorSchema=new Schema({
     address:{
         type:String,
         trim:true,
-        required:true
     },
     contact:{
         type:Number,
         trim:true,
-        required:true
     },
     isOrganization:{
         type:Boolean,
-        required:true,
         default:true
     },
     timesDistributed:{
         type:Number,
-        required:true,
         default:0
     },
     order:
@@ -72,7 +66,7 @@ const distributorSchema=new Schema({
             },
         ],
     OTP:{
-        type:String
+        type:Number
     }
     
 

@@ -19,17 +19,15 @@ const donorSchema=new Schema({
     },
     name:{
         type:String,
-        required:true,
         trim:true,
         index:true
     },
     avatar:{
         type:String,  //cloudnary(alternative to AWS) url to be used
-        required:true,
     },
-    coverImage:{
-        type:String,  //cloudnary(alternative to AWS) url to be used
-    },
+    // coverImage:{
+    //     type:String,  //cloudnary(alternative to AWS) url to be used
+    // },
     // watchHistory:[
     //     {
     //         type:Schema.Types.ObjectId,
@@ -47,21 +45,17 @@ const donorSchema=new Schema({
     address:{
         type:String,
         trim:true,
-        required:true
     },
     contact:{
         type:Number,
         trim:true,
-        required:true
     },
     isCatering:{
         type:Boolean,
-        required:true,
         default:true
     },
     timesDonated:{
         type:Number,
-        required:true,
         default:0
     },
     order:
@@ -70,7 +64,8 @@ const donorSchema=new Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref:"Order"
             },
-        ]
+        ],
+    OTP:Number
     
 
 
@@ -85,7 +80,10 @@ donorSchema.pre("save",async function(next){      //arrow function can't be used
 })
 
 donorSchema.methods.isPasswordCorrect = async function(password){  //custom methods to schema
-       return   await  bcrypt.compare(password,this.password);  //this
+        // console.log("isPasswordCorrect parameter:",password);
+        // console.log("this.password at isPasswordCorrect ",this.password);
+        return  await  bcrypt.compare(password,this.password);  //this
+
 }
 donorSchema.methods.generateAccessToken=function(){
     return jwt.sign(
@@ -106,7 +104,7 @@ donorSchema.methods.generateAccessToken=function(){
 
 }
 
-userSchema.methods.generateRefreshToken=function(){
+donorSchema.methods.generateRefreshToken=function(){
     return jwt.sign(
         {
             _id:this._id,   //payload or data
