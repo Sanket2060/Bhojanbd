@@ -67,7 +67,8 @@ const distributorSchema=new Schema({
         ],
     OTP:{
         type:Number
-    }
+    },
+    
     
 
 
