@@ -15,8 +15,10 @@ app.use(cookieParser());
 
 //routes import (done here so that to differentiate it from others)
 import userRouter from './routes/user.routes.js'
-
+import orderRouter from './routes/order.routes.js'  //afaile naam rakhne ho(default export vayesi)
 app.use('/api/v1/users',userRouter)  //reach to users route on /users
 //url:https//:localhost:9005/api/v1/users/register
+
+app.use('/api/v1/order',orderRouter);
 
 export {app}

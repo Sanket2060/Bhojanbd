@@ -61,9 +61,10 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
     
 
     //get data from frontend
-    const {username,email,password,isDonor}=req.body;
+    const {username,email,password,isDonor=false}=req.body;
     console.log("username",username);
 
+    
     //validation-non empty
     // if (username==''){
     //     throw new ApiError(400,"username can't be empty");
@@ -118,7 +119,8 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
 
 //first look user is created at database and remove password and refresh token field from response
     let user;
-    if (isDonor){
+    console.log("isDonor:",isDonor);
+    if (Boolean(isDonor)){
         user=await Donor.findById(createdUser._id).select(
             "-password -refreshToken -OTP"        
             )
@@ -132,10 +134,11 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
     if (!user){
         throw new Error(500,"Something went wrong while registering the user");
     }
-       const generatedOTP=await sendOTP(user.email);
-        user.OTP = generatedOTP;
+    //uncomment after the cloudfare gets the domain name
+    //    const generatedOTP=await sendOTP(user.email);
+    //     user.OTP = generatedOTP;
     //    await user.validate(false);
-       await  user.save({validateBeforeSave:false})   //instance was changed but not saved to database and we don't want the database to validate the required fields
+    //    await  user.save({validateBeforeSave:false})   //instance was changed but not saved to database and we don't want the database to validate the required fields
         //  await user.save(); // Save the changes to the database
     // return response to api call
         return res.status(201).json(    //status given here as it comes different place in postman
@@ -176,7 +179,7 @@ const verifyOTP=asyncHandler(async(req,res)=>{
 const completeRegistration=asyncHandler(async(req,res)=>{
     try {
         console.log("On complete registration");
-        const {_id,name,address,contact,isOrganization,isDonor}=req.body;
+        const {_id,name,address,contact,isOrganization,isDonor=false}=req.body;
         if
         ([name,_id,address,contact].some((field) => field?.trim()) === '') //The some function is used to check if at least one element in the array satisfies the provided condition.
         //here if any of the fields equals '' then it throws error 
@@ -242,12 +245,12 @@ const completeRegistration=asyncHandler(async(req,res)=>{
                             address,
                             contact,
                             isOrganization,
-                            avatar
+                            avatar:avatar.url
                         },
                         {new:true}
                     ) 
         } catch (error) {
-            throw new ApiError(500,`Can't update data to database at Distributor:`)    
+            throw new ApiError(500,`Can't update data to database at Distributor:${error}`)    
         }
             }
         res

@@ -30,6 +30,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
   router.route('/logout').post(verifyJWT,LogoutUser);
 
   
+  
 //   //secured routes Why secured??
 //   router.route('/logout').post(verifyJWT,LogoutUser);
   

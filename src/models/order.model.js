@@ -5,16 +5,12 @@ import mongoose, { Schema } from "mongoose";
 const orderSchema=new Schema({    
     
     address:{   //???get from current logged in User
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"Order"   
+        type:String
     },
     foodItems:
-        [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref:"FoodItem"
-            },
-        ],
+       {
+        type:String,
+       },
     foodForNumberOfPeople:{
         type:Number,
         required:true,
