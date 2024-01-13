@@ -4,7 +4,7 @@ import { ApiResponse } from '../utils/ApiResponse.js'
 import { Donor } from '../models/donor.model.js'
 import { Distributor } from '../models/distributor.model.js'
 import { Order } from "../models/order.model.js";
-
+import { Bhojan } from "../models/bhojandetails.model.js";
 const addOrder = asyncHandler(async function (req, res) {
   const { _id, foodItems, platesAvailable, closingTime } = req.body;
 
@@ -88,4 +88,66 @@ const addDistributorToOrder=asyncHandler(async function(req,res){
 
 
 })
-export  {addOrder,showActiveOrders,addDistributorToOrder};
+
+const closeOrder=asyncHandler(async function(req,res){
+  //get user and order Id
+  const {_id,_orderId}=req.body;
+  const user=await Distributor.findById(_id);
+  if (!user){ //null ko lagi pani ready parna paryo
+    throw new ApiError(401,"Invalid distributor trying to add order");
+  }
+  console.log("At the process");
+  // console.log("After pushing");
+  const order=await Order.findById(_orderId);
+  if (!order){
+    throw new ApiError(401,"No such order exists or the order has been taken already");
+  }
+ 
+  //set order to orderClosed true
+  order.orderClosed=true;
+  let updatedOrder;
+  try {
+   updatedOrder=await order.save({validateBeforeSave:false}); 
+  } catch (error) {
+    throw new ApiError(500,"Didn't updated changes to database");
+  }
+
+  //update points to Donor,Distributors and Bhojan
+  const {acceptedBy,listedBy}=order;
+  const donor=await Donor.findById(listedBy);
+  const distributor=await Distributor.findById(acceptedBy); 
+  const bhojan=await Bhojan.findById(process.env.BHOJAN_ID);
+  
+  let updatedDonor,updatedDistributor,updatedBhojan;
+  try {
+    const foodForNumberOfPeople=await order?.foodForNumberOfPeople;
+    if (donor) {
+      // Update the number of people served by the Donor
+      donor.numberOfPeopleFeed += foodForNumberOfPeople;
+      updatedDonor=await donor.save({ validateBeforeSave: false });
+    }
+  
+    if (distributor) {
+      // Update the number of people served by the Distributor
+      distributor.numberOfPeopleFeed += foodForNumberOfPeople;
+      updatedDistributor=await distributor.save({ validateBeforeSave: false });
+    }
+    if (bhojan){
+      bhojan.numberOfPeopleFeed += foodForNumberOfPeople;
+      updatedBhojan=await bhojan.save({ validateBeforeSave: false });
+
+    }
+  
+  } catch (error) {
+    throw new ApiError(500,`Problem at updating points to distributor,donor and Bhojan:${error}`)
+  }
+
+  //updating points  to Bhojan remaining
+
+  res
+  .status(200)
+  .json(new ApiResponse(200,{updatedOrder,updatedDonor,updatedDistributor,updatedBhojan},"Order Closed Successfully"));
+
+
+})
+export  {addOrder,showActiveOrders,addDistributorToOrder,closeOrder};

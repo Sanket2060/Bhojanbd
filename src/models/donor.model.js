@@ -65,7 +65,11 @@ const donorSchema=new Schema({
                 ref:"Order"
             },
         ],
-    OTP:Number
+    OTP:Number,
+    numberOfPeopleFeed:{
+        type:Number,
+        default:0
+    }
     
 
 

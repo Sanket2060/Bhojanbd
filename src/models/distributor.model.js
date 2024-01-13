@@ -68,6 +68,10 @@ const distributorSchema=new Schema({
     OTP:{
         type:Number
     },
+    numberOfPeopleFeed:{
+        type:Number,
+        default:0
+    }
     
     
 

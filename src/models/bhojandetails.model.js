@@ -3,17 +3,16 @@ import mongoose, { Schema } from "mongoose";
 const bhojanSchema=new Schema({
     foodSaved:{
         type:String,
-        required:true,
-        unique:true,
-        lowercase:true,
         trim:true,
-        index:true, //makes optimised for searching  username
+        default:'0kgs'
     },
     community:{
-        type:Number
-    },
-    totalPeopleServed:{
-        type:Number
+        type:Number,
+        default:0
+        },
+    numberOfPeopleFeed:{
+        type:Number,
+        default:0
     }
 
     

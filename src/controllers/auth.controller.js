@@ -5,7 +5,7 @@ import {Distributor} from '../models/distributor.model.js'
 import { Resend } from 'resend';
 import {uploadOnCloudinary} from '../utils/Cloudinary.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
-
+import { Bhojan } from "../models/bhojandetails.model.js";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendOTP=async(userEmail)=>{
@@ -130,6 +130,11 @@ const registerUser=asyncHandler(async(req,res)=>{   //asyncHandler le pathako fu
             "-password -refreshToken -OTP"        
             )
     }
+    let bhojan=await Bhojan.findById(process.env.BHOJAN_ID);
+    if (bhojan){  //add user to bhojan's tally
+        bhojan.community += 1;
+        await bhojan.save({ validateBeforeSave: false });  
+      }
 
     if (!user){
         throw new Error(500,"Something went wrong while registering the user");
@@ -377,6 +382,7 @@ const LogoutUser=asyncHandler((req,res)=>{
 
 
 })
+
 
 
 export  {registerUser,verifyOTP,completeRegistration,LoginUser,LogoutUser}
