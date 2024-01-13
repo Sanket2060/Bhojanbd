@@ -27,14 +27,14 @@ const orderSchema=new Schema({
         type:Boolean,
         default:true
     },
-    orderClosed:{ //order ko kaam vaisakexa vane close hunxa
-        type:Boolean,
-        default:false
-    },
+    // orderClosed:{ //order ko kaam vaisakexa vane close hunxa
+    //     type:Boolean,
+    //     default:false
+    // },
     orderStatus:{
         type:String,
         default:'running',
-        options:['completed','cancelled','closed'] //completed for volunteer's side,cancelled for volunteer's side and closed from donor side
+        options:[,'cancelled','closed'] //completed for volunteer's side,cancelled for volunteer's side and closed from donor side
     }
     
     

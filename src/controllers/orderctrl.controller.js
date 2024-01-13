@@ -104,7 +104,7 @@ const closeOrder=asyncHandler(async function(req,res){
   }
  
   //set order to orderClosed true
-  order.orderClosed=true;
+  order.orderStatus='closed';
   let updatedOrder;
   try {
    updatedOrder=await order.save({validateBeforeSave:false}); 
@@ -150,4 +150,27 @@ const closeOrder=asyncHandler(async function(req,res){
 
 
 })
-export  {addOrder,showActiveOrders,addDistributorToOrder,closeOrder};
+
+const cancelOrderForDonor=asyncHandler(async function(req,res){
+  //take orderId 
+  const {_orderId}=req.body;
+  //for order,set OrderStatus to cancelled
+  const order=await Order.findById(_orderId);
+  if (!order){
+    throw new ApiError(401,"Invalid orderId");
+  }
+  order.orderStatus='cancelled';
+})
+
+const cancelOrderForDistributor=asyncHandler(async function(req,res){
+   //take orderId 
+   const {_orderId}=req.body;
+   //for order,set OrderStatus to cancelled
+   const order=await Order.findById(_orderId);
+   if (!order){
+     throw new ApiError(401,"Invalid orderId");
+   }
+   order.orderStatus='cancelled';
+  //take orderId
+})
+export  {addOrder,showActiveOrders,addDistributorToOrder,closeOrder,cancelOrderForDonor,cancelOrderForDistributor};

@@ -18,6 +18,8 @@ Default gitignore for node->Take from any website from google  https://mrkandree
  Creating folder with terminal in windows??->Don't know
  chatgpt summary: https://chat.openai.com/share/17eb84f6-0836-41c5-adbe-5825d9c2fcc1
 
+🙌Video:How to connect frontend with Backend
+
 
  video: How to connect database in MERN with debugging:
   What you need to connect to mongodb from atlas:allowed ip address,correct id password and url
@@ -252,4 +254,4 @@ Discord doubt
 //     user.refreshToken=refreshToken; //we can change current database detail by database instance
 //   await  user.save({validateBeforeSave:false}) //to save the changes on instance and validateBeforeSave tells the code 
 
-Mongodb queries:find()
+Mongodb queries:find(),find(),sort(-1 or 1),limit(number),
