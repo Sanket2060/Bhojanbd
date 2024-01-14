@@ -89,7 +89,7 @@ const addDistributorToOrder=asyncHandler(async function(req,res){
 
 })
 
-const closeOrder=asyncHandler(async function(req,res){
+const closeOrder=asyncHandler(async function(req,res){ //changes orderStatus
   //get user and order Id
   const {_id,_orderId}=req.body;
   const user=await Distributor.findById(_id);
@@ -107,7 +107,7 @@ const closeOrder=asyncHandler(async function(req,res){
   order.orderStatus='closed';
   let updatedOrder;
   try {
-   updatedOrder=await order.save({validateBeforeSave:false}); 
+   updatedOrder=await order.save({validateBeforeSave:false},{new:true}).select("-password -refreshToken"); 
   } catch (error) {
     throw new ApiError(500,"Didn't updated changes to database");
   }
@@ -124,7 +124,7 @@ const closeOrder=asyncHandler(async function(req,res){
     if (donor) {
       // Update the number of people served by the Donor
       donor.numberOfPeopleFeed += foodForNumberOfPeople;
-      updatedDonor=await donor.save({ validateBeforeSave: false });
+      updatedDonor=await donor.save({ validateBeforeSave: false },{new:true}).select("-password -refreshToken");;
     }
   
     if (distributor) {
@@ -160,6 +160,11 @@ const cancelOrderForDonor=asyncHandler(async function(req,res){
     throw new ApiError(401,"Invalid orderId");
   }
   order.orderStatus='cancelled';
+  await order.save({validateBeforeSave:false})
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,{order},"Order cancelled successfully by donor"));
 })
 
 const cancelOrderForDistributor=asyncHandler(async function(req,res){
@@ -171,6 +176,11 @@ const cancelOrderForDistributor=asyncHandler(async function(req,res){
      throw new ApiError(401,"Invalid orderId");
    }
    order.orderStatus='cancelled';
-  //take orderId
+  await order.save({validateBeforeSave:false})
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,{order},"Order cancelled successfully by distributor"));
+
 })
 export  {addOrder,showActiveOrders,addDistributorToOrder,closeOrder,cancelOrderForDonor,cancelOrderForDistributor};

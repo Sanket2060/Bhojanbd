@@ -19,6 +19,9 @@ Default gitignore for node->Take from any website from google  https://mrkandree
  chatgpt summary: https://chat.openai.com/share/17eb84f6-0836-41c5-adbe-5825d9c2fcc1
 
 🙌Video:How to connect frontend with Backend
+-Using proxies instead of using https://localhost/..... everytime
+- /api ma define garey /api ko agadi (http://......) haru append ta garxa nai ani server le
+ni CORS error dinna🙋‍♀️❓39:00 ->Use of proxy resolves CORS error 🙋‍♀️❓
 
 
  video: How to connect database in MERN with debugging:
