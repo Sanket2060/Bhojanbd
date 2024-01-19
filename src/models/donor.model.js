@@ -69,6 +69,10 @@ const donorSchema=new Schema({
     numberOfPeopleFeed:{
         type:Number,
         default:0
+    },
+    isDonor:{
+        type:Boolean,
+        default:true
     }
     
 

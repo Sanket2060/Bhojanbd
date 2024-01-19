@@ -71,6 +71,10 @@ const distributorSchema=new Schema({
     numberOfPeopleFeed:{
         type:Number,
         default:0
+    },
+    isDonor:{
+        type:Boolean,
+        default:false
     }
     
     

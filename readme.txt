@@ -258,3 +258,8 @@ Discord doubt
 //   await  user.save({validateBeforeSave:false}) //to save the changes on instance and validateBeforeSave tells the code 
 
 Mongodb queries:find(),find(),sort(-1 or 1),limit(number),
+
+
+Errors at project::
+invalid otp huda bahira ko catch block ko error send garirathyo (instead of "invalid otp" message from inside if...else)
+Chatgpt link: https://chat.openai.com/share/e7aa1961-1c0d-4f75-bf4a-6d31c7678382
