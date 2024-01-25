@@ -50,4 +50,13 @@ const getUserDetailsFromName=asyncHandler(async function (req,res){
     .json(new ApiResponse(200,{user},"Data of user extracted from name sent"));
 
 })
-export {getTopDistributors,getTopDonors,getUserDetailsFromName}
+const showActiveOrders=asyncHandler(async function(req,res){
+    const result = await Order.find({ isActive: true });
+      // .toArray();
+    console.log("Active Listings are:",result);
+  
+    return res
+    .status(200)
+    .json(new ApiResponse(200,result?{result}:null,"Active Orders sent successfully"))
+  })
+export {getTopDistributors,getTopDonors,getUserDetailsFromName,showActiveOrders}

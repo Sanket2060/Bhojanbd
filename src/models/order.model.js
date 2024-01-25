@@ -3,7 +3,9 @@ import mongoose, { Schema } from "mongoose";
 
 
 const orderSchema=new Schema({    
-    
+    title:{
+        type:String
+    },
     address:{   //???get from current logged in User
         type:String
     },
@@ -18,6 +20,9 @@ const orderSchema=new Schema({
     listedBy:{
         type: mongoose.Schema.Types.ObjectId,
         ref:"Donor"
+    },
+    contact:{
+        type:Number
     },
     acceptedBy:{
         type: mongoose.Schema.Types.ObjectId,
@@ -34,7 +39,10 @@ const orderSchema=new Schema({
     orderStatus:{
         type:String,
         default:'running',
-        options:[,'cancelled','closed'] //completed for volunteer's side,cancelled for volunteer's side and closed from donor side
+        options:['cancelled','closed'] //completed for volunteer's side,cancelled for volunteer's side and closed from donor side
+    },
+    closingTime:{
+        type:Number
     }
     
     

@@ -398,8 +398,10 @@ const completeRegistration=asyncHandler(async(req,res)=>{
                             username:temporaryUser.username,
                             email: temporaryUser.email,
                             password:temporaryUser.password
-                        },
-                        {new:true}
+                        }
+                        // ,
+
+                        // {new:true}
                     )
             // updatedUser.password=null;
             // updatedUser.refreshToken=null;
@@ -472,7 +474,7 @@ const LoginUser=asyncHandler(async(req,res)=>{
   })
     .select('-password -refreshToken')
     .lean()
-     ||   await Donor.findOne({
+     ||   await Distributor.findOne({
         email,
       })
         .select('-password -refreshToken')
@@ -500,11 +502,11 @@ const LoginUser=asyncHandler(async(req,res)=>{
     .cookie("refreshToken",refreshToken,options) //refreshToken Cookie
     .json(
         new ApiResponse(200,
-            {
+            
                 //  user:loggedInUser,accessToken,refreshToken  //????{} missing-> sending multiple at a time???
                 apiResultUser
                 
-            },
+            ,
          "User logged in successfully"
         )
     )

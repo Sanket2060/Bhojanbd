@@ -7,7 +7,7 @@ const app=express();
 //     credentials:true
 
 // }))
-const allowedOrigins = ['http://localhost:5178'];
+const allowedOrigins = ['http://localhost:5173'];
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
