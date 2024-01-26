@@ -9,9 +9,9 @@ import { Bhojan } from "../models/bhojandetails.model.js";
 const getTopDonors=asyncHandler(async function (req,res){
     try {
         const topTenDonators=await Donor.find({})
-        .sort({fieldName:-1})
+        .sort({numberOfPeopleFeed:-1})
         .limit(10)
-        .select('name username numberOfPeopleFeed'); // Selecting only the specified fields
+        .select('name username numberOfPeopleFeed avatar address'); // Selecting only the specified fields
 
         res
         .status(200)
