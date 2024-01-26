@@ -176,6 +176,23 @@ const cancelOrderForDistributor=asyncHandler(async function(req,res){
   .json(new ApiResponse(200,{order},"Order cancelled successfully by distributor"));
 
 })
+const completedOrderForDonor=asyncHandler(async function(req,res){
+  //take orderId 
+  const {_orderId}=req.body;
+  //for order,set OrderStatus to cancelled
+  const order=await Order.findById(_orderId);
+  if (!order){
+    throw new ApiError(401,"Invalid orderId");
+  }
+  order.orderStatus='completed';
+  await order.save({validateBeforeSave:false})
+
+  return res
+  .status(200)
+  .json(new ApiResponse(200,{order},"Order completed successfully by donor"));
+})
+
+
 const activeListingsForDonor=asyncHandler(async function(req,res){
   const {_id}=req.body;
   console.log("Id is:",_id);
@@ -320,4 +337,4 @@ const singleOrder = await Order.findById(orderId).exec(); // Ensure exec() is ca
 });
 
 
-export  {addOrder,addDistributorToOrder,closeOrder,cancelOrderForDonor,cancelOrderForDistributor,activeListingsForDonor,pendingListingsForDistributor};
+export  {addOrder,addDistributorToOrder,closeOrder,cancelOrderForDonor,cancelOrderForDistributor,activeListingsForDonor,pendingListingsForDistributor,completedOrderForDonor};

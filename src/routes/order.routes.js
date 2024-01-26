@@ -1,6 +1,6 @@
 //add order route
 import { Router } from "express";
-import {addOrder,addDistributorToOrder, closeOrder,cancelOrderForDonor,cancelOrderForDistributor, activeListingsForDonor,pendingListingsForDistributor} from "../controllers/orderctrl.controller.js";
+import {addOrder,addDistributorToOrder, closeOrder,cancelOrderForDonor,cancelOrderForDistributor, activeListingsForDonor,pendingListingsForDistributor,completedOrderForDonor} from "../controllers/orderctrl.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
     const router=Router();
@@ -13,4 +13,6 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
     router.route('/cancel-order-for-distributor').post(cancelOrderForDistributor);
     router.route('/active-listings-for-donor').post(activeListingsForDonor);
     router.route('/pending-listings-for-distributor').post(pendingListingsForDistributor);
+    router.route('/completed-order-for-donor').post(completedOrderForDonor);
+    
     export default router
