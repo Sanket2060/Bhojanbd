@@ -59,7 +59,69 @@ const showActiveOrders=asyncHandler(async function(req,res){
     .status(200)
     .json(new ApiResponse(200,result?{result}:null,"Active Orders sent successfully"))
   })
-  const getAllCompletedOrdersForDonor = asyncHandler(async (req, res) => {
+//   const getAllCompletedOrdersForDonor = asyncHandler(async (req, res) => {
+//     const { _id } = req.body;
+
+//     try {
+//         // Find the donor by _id
+//         const user = await Donor.findOne({ _id }).select("-password -refreshToken");
+
+//         // If no user found with the provided _id, throw an error
+//         if (!user) {
+//             throw new ApiError(401, "Invalid _id. No user with this id");
+//         }
+//         console.log("User:", user);
+
+//         // Extract completed orders for the user
+//         let completedOrders = [];
+
+//         if (user.order && user.order.length > 0) {
+//             const allUsers = await Promise.all(user.order.map(async (item) => {
+//                 const theOrder = await Order.findById(item);
+//                 return theOrder;
+//             }));
+
+//             completedOrders = allUsers.filter(order => !Boolean(order.isActive) && order.orderStatus == "completed");
+//         }
+//         console.log("completedOrders:", completedOrders);
+
+//         res.status(200).json(new ApiResponse(200, { completedOrders }, "Completed orders for donor sent successfully"));
+//     } catch (error) {
+//         console.log("Error in retrieving completed orders for donor:", error);
+//         throw new ApiError(500, "Internal Server Error");
+//     }
+// });
+// const getAllCompletedOrdersForDonor = asyncHandler(async (req, res) => {
+//     const { _id } = req.body;
+
+//     try {
+//         // Find the donor by _id
+//         const user = await Donor.findOne({ _id }).select("-password -refreshToken");
+
+//         // If no user found with the provided _id, throw an error
+//         if (!user) {
+//             throw new ApiError(401, "Invalid _id. No user with this id");
+//         }
+//         console.log("User:", user);
+
+//         // Extract completed orders for the user
+//         let completedOrders = [];
+
+//         if (user.order && user.order.length > 0) {
+//             completedOrders = await Promise.all(user.order.map(async (item) => {
+//                 const theOrder = await Order.findOne({ _id: item, isActive: false, orderStatus: "completed" });
+//                 return theOrder;
+//             }));
+//         }
+//         console.log("completedOrders:", completedOrders);
+
+//         res.status(200).json(new ApiResponse(200, { completedOrders }, "Completed orders for donor sent successfully"));
+//     } catch (error) {
+//         console.log("Error in retrieving completed orders for donor:", error);
+//         throw new ApiError(500, "Internal Server Error");
+//     }
+// });
+const getAllCompletedOrdersForDonor = asyncHandler(async (req, res) => {
     const { _id } = req.body;
 
     try {
@@ -76,12 +138,16 @@ const showActiveOrders=asyncHandler(async function(req,res){
         let completedOrders = [];
 
         if (user.order && user.order.length > 0) {
-            const allUsers = await Promise.all(user.order.map(async (item) => {
-                const theOrder = await Order.findById(item);
+            completedOrders = await Promise.all(user.order.map(async (item) => {
+                const theOrder = await Order.findOne({ _id: item, isActive: false, orderStatus: "completed" });
                 return theOrder;
             }));
 
-            completedOrders = allUsers.filter(order => !order.isActive && order.orderStatus == "completed");
+            // Filter out null or undefined elements
+            completedOrders = completedOrders.filter(order => order !== null && order !== undefined);
+
+            // Sort the completedOrders array by createdAt field in descending order
+            completedOrders.sort((a, b) => b.createdAt - a.createdAt);
         }
         console.log("completedOrders:", completedOrders);
 
@@ -91,6 +157,8 @@ const showActiveOrders=asyncHandler(async function(req,res){
         throw new ApiError(500, "Internal Server Error");
     }
 });
+
+
 
 export {
     getTopDistributors,

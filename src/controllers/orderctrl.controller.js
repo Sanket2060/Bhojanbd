@@ -185,7 +185,7 @@ const completedOrderForDonor=asyncHandler(async function(req,res){
     throw new ApiError(401,"Invalid orderId");
   }
   order.orderStatus='completed';
-  order.activeStatus='false';
+  order.isActive=false;
   await order.save({validateBeforeSave:false})
 
   return res
