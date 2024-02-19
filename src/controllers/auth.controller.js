@@ -426,6 +426,11 @@ const completeRegistration=asyncHandler(async(req,res)=>{
             console.log("User wasn't found at database.");
         }
         
+        let bhojan=await Bhojan.findById(process.env.BHOJAN_ID);
+          if (bhojan){  //add user to bhojan's tally
+            bhojan.community += 1;
+            await bhojan.save({ validateBeforeSave: false });  
+          }
         
         return res
         .status(200)

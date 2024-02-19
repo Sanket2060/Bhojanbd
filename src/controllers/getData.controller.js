@@ -27,7 +27,7 @@ const getTopDonors=asyncHandler(async function (req,res){
 const getTopDistributors=asyncHandler(async function (req,res){
    try {
      const topTenDistributors=await Distributor.find({})
-     .sort({fieldName:-1})
+     .sort({numberOfPeopleFeed:-1})
      .limit(10)
      .select('name username numberOfPeopleFeed'); // Selecting only the specified fields
 
