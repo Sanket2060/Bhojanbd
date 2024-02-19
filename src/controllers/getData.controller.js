@@ -158,6 +158,12 @@ const getAllCompletedOrdersForDonor = asyncHandler(async (req, res) => {
     }
 });
 
+const getOrganizationDetails=asyncHandler(async (req,res)=>{
+    const bhojan = await Bhojan.findById(process.env.BHOJAN_ID);
+    res
+    .status(200).json(new ApiResponse(200,{bhojan},"Sent organization details successfully"))
+})
+
 
 
 export {
@@ -165,5 +171,6 @@ export {
     getTopDonors,
     getUserDetailsFromName,
     showActiveOrders,
-    getAllCompletedOrdersForDonor
+    getAllCompletedOrdersForDonor,
+    getOrganizationDetails
 };

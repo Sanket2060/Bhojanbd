@@ -356,6 +356,7 @@ const increaseOrderPoints=asyncHandler(async function(req,res){
   // console.log("_orderId",_orderId);
   let donor,distributor;
   try {
+    const bhojan = await Bhojan.findById(process.env.BHOJAN_ID);
       const order=await Order.findById(_orderId);
       console.log("order: ",order);
       if (!order){
@@ -368,6 +369,7 @@ const increaseOrderPoints=asyncHandler(async function(req,res){
       // console.log(distributor);
       donor.numberOfPeopleFeed = parseInt(donor.numberOfPeopleFeed) + parseInt(foodForNumberOfPeople);
       distributor.numberOfPeopleFeed = parseInt(distributor.numberOfPeopleFeed) + parseInt(foodForNumberOfPeople);
+      bhojan.numberOfPeopleFeed=parseInt(bhojan.numberOfPeopleFeed)+parseInt(foodForNumberOfPeople);
       await donor.save({ validateBeforeSave: false });
       await distributor.save({ validateBeforeSave: false });
     }
