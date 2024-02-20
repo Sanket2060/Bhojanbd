@@ -7,17 +7,10 @@ const app=express();
 //     credentials:true
 
 // }))
-const allowedOrigins = ['http://localhost:5173'];
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-}));
+  origin:"*",
+  credentials:true
+}))
 app.use(express.json({limit:"16kb"}))
 app.use(express.urlencoded({limit:"16kb",extended:true}))
 app.use(express.static("public"));
