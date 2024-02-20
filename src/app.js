@@ -8,7 +8,7 @@ const app=express();
 
 // }))
 app.use(cors({
-  origin:"*",
+  origin:"https://khana.me",
   credentials:true
 }))
 app.use(express.json({limit:"16kb"}))
