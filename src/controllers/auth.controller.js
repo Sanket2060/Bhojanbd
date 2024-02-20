@@ -428,7 +428,7 @@ const completeRegistration=asyncHandler(async(req,res)=>{
         
         let bhojan=await Bhojan.findById(process.env.BHOJAN_ID);
           if (bhojan){  //add user to bhojan's tally
-            bhojan.community += 1;
+            bhojan.community = parseInt(bhojan.community)+1;
             await bhojan.save({ validateBeforeSave: false });  
           }
         
