@@ -315,6 +315,10 @@ const completeRegistration = asyncHandler(async (req, res) => {
     console.log("Process run 0");
     console.log("multer path:", req.files?.avatar[0]?.path);  //if undefined whole statement undefined and not printed
     console.log("Process run 1");
+    const hasAvatar = req.files && req.files.avatar && req.files.avatar.length > 0;
+if (!hasAvatar) {
+    throw new ApiError(400, "Avatars file is required");
+}
     const avatarLocalPath = req.files?.avatar[0]?.path;   // const coverImageLocalPath = req.files?.coverImage[0]?.path;
     // const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
     //???multer middleware giving .files property to req.Where did `avatar` keyword come from???
@@ -325,9 +329,9 @@ const completeRegistration = asyncHandler(async (req, res) => {
     // }
 
 
-    if (!avatarLocalPath) {
-      throw new ApiError(400, "Avatars file is required");
-    }
+    // if (!avatarLocalPath) {
+    //   throw new ApiError(400, "Avatars file is required");
+    // }
     console.log("Got avatar path sucessfully");
 
     //upload files to cloudanary,check cloudnary avatar url is present or not
