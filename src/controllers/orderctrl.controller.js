@@ -89,7 +89,7 @@ const closeOrder = asyncHandler(async function (req, res) { //changes orderStatu
   if (!user) { //null ko lagi pani ready parna paryo
     throw new ApiError(401, "Invalid distributor trying to add order");
   }
-  console.log("At the process");
+  // console.log("At the process");
   // console.log("After pushing");
   const order = await Order.findById(_orderId);
   if (!order) {
@@ -209,14 +209,14 @@ const completedOrderForDonor = asyncHandler(async function (req, res) {
 
 const activeListingsForDonor = asyncHandler(async function (req, res) {
   const { _id } = req.body;
-  console.log("Id is:", _id);
+  // console.log("Id is:", _id);
   try {
     const user = await Donor.findById(_id);
     if (!user) {
       console.log("Can't find user with this id");
       throw new ApiError(401, "Can't find user with this id");
     }
-    console.log("Reached here");
+    // console.log("Reached here");
     //  const orders=await user.order.map((listing,index)=>{
     //     // if (listing.orderStatus=='running'){
     //       console.log(listing._id);
@@ -232,12 +232,12 @@ const activeListingsForDonor = asyncHandler(async function (req, res) {
       return listing
     })
 
-    console.log("Active listings:", allListings);
+    // console.log("Active listings:", allListings);
     // Perform further actions on each active listing
     const detailedListings = [];
     for (const listing of allListings) {
       // Assuming you want to find the order details for each active listing
-      console.log(listing._id);
+      // console.log(listing._id);
       const order = await Order.findById(listing._id);
       if (order.orderStatus == 'running')
         detailedListings.push({
@@ -312,30 +312,30 @@ const activeListingsForDonor = asyncHandler(async function (req, res) {
 const pendingListingsForDistributor = asyncHandler(async function (req, res) {
   try {
     const { _id } = req.body;
-    console.log("Id is:", _id);
+    // console.log("Id is:", _id);
 
     const user = await Distributor.findOne({ _id }).select("-password -refreshToken"); // Use findOne instead of find
-    console.log("User:", user);
+    // console.log("User:", user);
 
     if (!user) {
       throw new ApiError(401, "Invalid user Id, can't find any user with this userId");
     }
 
-    console.log("user.order", user.order);
+    // console.log("user.order", user.order);
     const usersRunningOrders = [];
 
     for (const orderId of user.order) {
-      console.log("OrderId:", orderId);
+      // console.log("OrderId:", orderId);
       const singleOrder = await Order.findById(orderId).exec(); // Ensure exec() is called
       // console.log("singleOrder", singleOrder);
 
       if (singleOrder && singleOrder.orderStatus === 'running') {
-        console.log("running orders",singleOrder);
+        // console.log("running orders",singleOrder);
         usersRunningOrders.push(singleOrder);
       }
     }
 
-    console.log("Running Orders:", usersRunningOrders);
+    // console.log("Running Orders:", usersRunningOrders);
 
     res
       .status(200)
@@ -358,14 +358,14 @@ const increaseOrderPoints=asyncHandler(async function(req,res){
   try {
     const bhojan = await Bhojan.findById(process.env.BHOJAN_ID);
       const order=await Order.findById(_orderId);
-      console.log("order: ",order);
+      // console.log("order: ",order);
       if (!order){
         throw new ApiError(401,"Invalid orderId");
       }
       let foodForNumberOfPeople=order.foodForNumberOfPeople; 
        donor = await Donor.findById(order.listedBy); // Change here
        distributor = await Distributor.findById(order.acceptedBy); // Change here
-      console.log("At donor");
+      // console.log("At donor");
       // console.log(distributor);
       donor.numberOfPeopleFeed = parseInt(donor.numberOfPeopleFeed) + parseInt(foodForNumberOfPeople);
       distributor.numberOfPeopleFeed = parseInt(distributor.numberOfPeopleFeed) + parseInt(foodForNumberOfPeople);

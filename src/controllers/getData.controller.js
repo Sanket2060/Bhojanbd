@@ -53,7 +53,7 @@ const getUserDetailsFromName=asyncHandler(async function (req,res){
 const showActiveOrders=asyncHandler(async function(req,res){
     const result = await Order.find({ isActive: true });
       // .toArray();
-    console.log("Active Listings are:",result);
+    // console.log("Active Listings are:",result);
   
     return res
     .status(200)
@@ -132,7 +132,7 @@ const getAllCompletedOrdersForDonor = asyncHandler(async (req, res) => {
         if (!user) {
             throw new ApiError(401, "Invalid _id. No user with this id");
         }
-        console.log("User:", user);
+        // console.log("User:", user);
 
         // Extract completed orders for the user
         let completedOrders = [];
@@ -149,7 +149,7 @@ const getAllCompletedOrdersForDonor = asyncHandler(async (req, res) => {
             // Sort the completedOrders array by createdAt field in descending order
             completedOrders.sort((a, b) => b.createdAt - a.createdAt);
         }
-        console.log("completedOrders:", completedOrders);
+        // console.log("completedOrders:", completedOrders);
 
         res.status(200).json(new ApiResponse(200, { completedOrders }, "Completed orders for donor sent successfully"));
     } catch (error) {

@@ -471,7 +471,7 @@ const LoginUser = asyncHandler(async (req, res) => {
 
   //Generate  Access and refresh token
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);  //id from the instance of the trying to  login account
-
+//access and refreshToken are generated everytime user logs in and refreshToken is deleted from database during logout
 
   // const loggedInUser=User.findById(user._id).select(  //don't get password and refresh token from database
   //     "-password -refreshToken"

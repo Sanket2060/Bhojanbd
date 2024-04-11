@@ -128,3 +128,6 @@ distributorSchema.methods.generateRefreshToken=function(){
 }
 //pre and methods are from userSchema itself so they can have access to there data members.
 export const Distributor=mongoose.model("Distributor",distributorSchema);
+
+//pre??
+//constantly check for expiration time reached,reload or trying to access the website after some time(revisit)
