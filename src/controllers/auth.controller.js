@@ -395,7 +395,7 @@ if (!hasAvatar) {
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(updatedUser._id);
     console.log("Access token,refresh Token:", accessToken, refreshToken);
     const options = {
-      httpOnly: true,
+      httpOnly: false,
       secure: true
     }
     let finalUser;
@@ -479,7 +479,7 @@ const LoginUser = asyncHandler(async (req, res) => {
 
   //send cookie
   const options = {   //only modifyable by server not by browser by anyone
-    httpOnly: true,
+    httpOnly: false,
     secure: true
   }
 
@@ -527,7 +527,7 @@ const LogoutUser = asyncHandler((req, res) => {
 
   //set cookies on browser to undefined
   const options = {   //only modifyable by server not by browser by anyone
-    httpOnly: true,
+    httpOnly: false,
     secure: true
   }
   res.

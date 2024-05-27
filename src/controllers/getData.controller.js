@@ -164,6 +164,21 @@ const getOrganizationDetails=asyncHandler(async (req,res)=>{
     .status(200).json(new ApiResponse(200,{bhojan},"Sent organization details successfully"))
 })
 
+const getUserDetails=asyncHandler((req,res)=>{
+    try {
+        
+        const user=req.user;
+        res.
+        status(200)
+        .json(
+         new ApiResponse(200,user,"User data retrieved sucessfully")
+        )
+    } catch (error) {
+        throw new ApiError(500,"Error sending user details")
+    }
+  
+  })
+
 
 
 export {
@@ -172,5 +187,6 @@ export {
     getUserDetailsFromName,
     showActiveOrders,
     getAllCompletedOrdersForDonor,
-    getOrganizationDetails
+    getOrganizationDetails,
+    getUserDetails
 };

@@ -30,7 +30,7 @@ ni CORS error dinna🙋‍♀️❓39:00 ->Use of proxy resolves CORS error 🙋
 
   Defining database name at constants.js so that at changes we don't have to change the whole file
 
-  Ifies=>Special function to run when compiled syntax: ;(async ....function)()
+  IIFE=>Special function to run when compiled syntax: ;(async ....function)()
   Connecting to database mustn't happen at single line.
   "Database is at another continent" =>async await
 
@@ -49,7 +49,7 @@ ni CORS error dinna🙋‍♀️❓39:00 ->Use of proxy resolves CORS error 🙋
 
 
   video:  CUSTOM API RESPONSE AND ERROR HANDLING video:
-  Why doesn't app has to be imported (created at app.js) to use it??
+  Why doesn't app has to be imported (created at app.js) to use it??->it's been imported
   Providing additional callback to app.js???->To show server is running rightly message
     5:40 assignment->Done
     app.use is for middleware configurations
@@ -63,9 +63,12 @@ app.use(express.json({limit:"16kb"}))  //how much of  json data is limited by li
 app.use(express.urlencoded({limit:"16kb",extended:true}))
   3.Keeping files such as images,favicon at server itself:
 app.use(express.static("public"));
-
+The line app.use(express.static("public")); in your app.js file sets up a static file server.
+This means that any files placed in the public directory will be served to clients without any special routing logic.
 app.use(express.cookieparser());
-
+This middleware parses cookies attached to the client's request and makes them available in the req.cookies object in subsequent middleware and route handlers.
+ It essentially extracts cookie data from the request headers and provides a convenient way to access it within your application.
+ 
 Use asyncHandler to write a covering of async await try catch rather than writing for each and every time:
 ->By async await and try catch
 
@@ -263,3 +266,20 @@ Mongodb queries:find(),find(),sort(-1 or 1),limit(number),
 Errors at project::
 invalid otp huda bahira ko catch block ko error send garirathyo (instead of "invalid otp" message from inside if...else)
 Chatgpt link: https://chat.openai.com/share/e7aa1961-1c0d-4f75-bf4a-6d31c7678382
+
+
+19:Mongodb aggregation pipeline
+Aggregation pipelines->Filtration,to join two collection(just like tables) 
+
+
+
+
+
+
+
+
+
+
+
+Is it responsibility of a good backend developer to tackle for every possible errors.?
+What to send as errors:good messages?? as frontend dev can just show that error on screen??
