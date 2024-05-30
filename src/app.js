@@ -12,13 +12,13 @@ const server = createServer(app);
 
 // }))
 // Initialize Socket.IO
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-});
+// const io = new Server(server, {
+//   cors: {
+//     origin: 'http://localhost:5173',
+//     methods: ['GET', 'POST'],
+//     credentials: true
+//   }
+// });
 app.use(cors({
   origin:"https://khana.me/",
   credentials:true
@@ -40,28 +40,28 @@ app.use('/api/v1/order',orderRouter);
 import getData from './routes/getData.routes.js'
 app.use('/api/v1/getData',getData)
 
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+// app.use((req, res, next) => {
+//   req.io = io;
+//   next();
+// });
 
-// Socket.IO connection event
-io.on('connection', (socket) => {
-  console.log('a user connected');
+// // Socket.IO connection event
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
 
-  // Emit a notification when a user connects
-  socket.emit('notification', 'Welcome to the app!');
+//   // Emit a notification when a user connects
+//   socket.emit('notification', 'Welcome to the app!');
 
-  // Handle custom events
-  socket.on('customEvent', (data) => {
-    console.log(data);
-    // Handle the event
-  });
+//   // Handle custom events
+//   socket.on('customEvent', (data) => {
+//     console.log(data);
+//     // Handle the event
+//   });
 
-  // Handle disconnect
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-});
+//   // Handle disconnect
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+// });
 
 export {app}
