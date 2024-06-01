@@ -56,7 +56,7 @@ const generateAccessAndRefreshTokens = async (userId) => { //function to generat
     user.refreshToken = refreshToken; //we can change current database detail by database instance
     await user.save({ validateBeforeSave: false }) //to save the changes on instance and validateBeforeSave tells the code 
     //that not to follow validations (required and other requirements of model but just save the changed data)
-    console.log("Access and refresh Token at generation function:", accessToken, refreshToken);
+    // console.log("Access and refresh Token at generation function:", accessToken, refreshToken);
     return { accessToken, refreshToken };
   } catch (error) {
     throw new ApiError(500, "Something went wrong while generating access and refresh token");
@@ -285,15 +285,15 @@ const verifyOTP = asyncHandler(async (req, res) => {
 
 const completeRegistration = asyncHandler(async (req, res) => {
   try {
-    console.log("On complete registration");
+    // console.log("On complete registration");
     const { userId, name, address, contact, isOrganization
       // ,isDonor=false
     } = req.body;
-    console.log("UserId:", userId);
-    console.log("Temporary Users from complete registration:", temporaryUsers);
+    // console.log("UserId:", userId);
+    // console.log("Temporary Users from complete registration:", temporaryUsers);
     // Find the temporary user by the provided userId
     const temporaryUser = temporaryUsers[userId];
-    console.log("Temporary User from complete registration:", temporaryUser);
+    // console.log("Temporary User from complete registration:", temporaryUser);
 
     if (!temporaryUser) {
       throw new ApiError(401, "Invalid userId.Can't find previously given user's data");
@@ -310,11 +310,11 @@ const completeRegistration = asyncHandler(async (req, res) => {
 
     //check for images,check for avatar(avatar required)
     // console.log("req.files:",req.files);
-    console.log("Before multer path");
-    console.log("Multer req files:", req.files);
-    console.log("Process run 0");
-    console.log("multer path:", req.files?.avatar[0]?.path);  //if undefined whole statement undefined and not printed
-    console.log("Process run 1");
+    // console.log("Before multer path");
+    // console.log("Multer req files:", req.files);
+    // console.log("Process run 0");
+    // console.log("multer path:", req.files?.avatar[0]?.path);  //if undefined whole statement undefined and not printed
+    // console.log("Process run 1");
     const hasAvatar = req.files && req.files.avatar && req.files.avatar.length > 0;
 if (!hasAvatar) {
     throw new ApiError(400, "Avatars file is required");
@@ -332,21 +332,21 @@ if (!hasAvatar) {
     // if (!avatarLocalPath) {
     //   throw new ApiError(400, "Avatars file is required");
     // }
-    console.log("Got avatar path sucessfully");
+    // console.log("Got avatar path sucessfully");
 
     //upload files to cloudanary,check cloudnary avatar url is present or not
     const avatar = await uploadOnCloudinary(avatarLocalPath); //not being called????
-    console.log("Avatar: ",avatar);
+    // console.log("Avatar: ",avatar);
     //    const coverImage=await uploadOnCloudinary(coverImageLocalPath);
     if (!avatar) {
       throw new ApiError(500, "Avatar file is required");
     }
 
-    console.log("Avatar is:", avatar.url);
+    // console.log("Avatar is:", avatar.url);
     let updatedUser;
     if (isDonor) {
       try {
-        console.log("Runned from donor");
+        // console.log("Runned from donor");
         updatedUser = await Donor.create(
           {
             name,
@@ -393,7 +393,7 @@ if (!hasAvatar) {
     }
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(updatedUser._id);
-    console.log("Access token,refresh Token:", accessToken, refreshToken);
+    // console.log("Access token,refresh Token:", accessToken, refreshToken);
     const options = {
       httpOnly: false,
       secure: true

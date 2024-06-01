@@ -209,7 +209,7 @@ const completedOrderForDonor = asyncHandler(async function (req, res) {
 
 const activeListingsForDonor = asyncHandler(async function (req, res) {
   const { _id } = req.body;
-  // console.log("Id is:", _id);
+  console.log("Id is:", _id);
   try {
     const user = await Donor.findById(_id);
     if (!user) {
@@ -239,7 +239,7 @@ const activeListingsForDonor = asyncHandler(async function (req, res) {
       // Assuming you want to find the order details for each active listing
       // console.log(listing._id);
       const order = await Order.findById(listing._id);
-      if (order.orderStatus == 'running')
+      if (order?.orderStatus == 'running')
         detailedListings.push({
           order
         });
@@ -248,6 +248,7 @@ const activeListingsForDonor = asyncHandler(async function (req, res) {
       .status(200)
       .json(new ApiResponse(200, detailedListings, "Active listings for the user sent successfully"));
   } catch (error) {
+    console.log("Can't provide active listings",error);
     throw new ApiError(500, "Can't provide active listings");
   }
 })

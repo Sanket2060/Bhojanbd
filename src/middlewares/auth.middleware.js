@@ -27,13 +27,13 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     await  Distributor.findById(decodedToken?._id).select("-password -refreshToken");
     //_id was given when token  was made(encryption happened)
     //    console.log("User at verifyjwt",user);
-    console.log("usered",user);
+    // console.log("usered",user);
     if (!user) {
       throw new ApiError(401, "Invalid access token"); //??401 as unauthorized error???
     }
     req.user = user; //req object gets user property by this middleware
-    console.log("middleware passed successfully");
-    console.log("user", user);
+    // console.log("middleware passed successfully");
+    // console.log("user", user);
     next();
   } catch (error) {
     if (error == "TokenExpiredError: jwt expired") {

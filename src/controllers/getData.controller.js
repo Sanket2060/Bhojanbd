@@ -251,11 +251,11 @@ const getDonorsRank = asyncHandler(async (req, res) => {
     if (!username) {
       throw new ApiError(400, "Can't find users rank");
     }
-    console.log("topTenDonators", topTenDonators);
+    // console.log("topTenDonators", topTenDonators);
     topTenDonators.map((user, index) => {
-      console.log("user", user.username);
+      // console.log("user", user.username);
       if (username == user.username) {
-        console.log("successfully found");
+        // console.log("successfully found");
         rank = index + 1;
       }
     });
