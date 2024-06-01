@@ -153,6 +153,7 @@ const cancelOrderForDonor = asyncHandler(async function (req, res) {
     throw new ApiError(401, "Invalid orderId");
   }
   order.orderStatus = 'cancelled';
+  order.isActive=false;  //As aba order nai donor le falesi active rakhni kura nai vayena
   await order.save({ validateBeforeSave: false })
 
   return res
@@ -209,35 +210,21 @@ const completedOrderForDonor = asyncHandler(async function (req, res) {
 
 const activeListingsForDonor = asyncHandler(async function (req, res) {
   const { _id } = req.body;
-  console.log("Id is:", _id);
   try {
     const user = await Donor.findById(_id);
     if (!user) {
       console.log("Can't find user with this id");
       throw new ApiError(401, "Can't find user with this id");
     }
-    // console.log("Reached here");
-    //  const orders=await user.order.map((listing,index)=>{
-    //     // if (listing.orderStatus=='running'){
-    //       console.log(listing._id);
-    //       console.log(listing.address);
-    //       console.log(`Index:${index} and ${listing.orderStatus}`);
-    //       return listing
-    //     }
-    // }
-    // )
 
-    // console.log("orders:",orders);
     const allListings = user?.order?.map((listing) => {
       return listing
     })
 
-    // console.log("Active listings:", allListings);
     // Perform further actions on each active listing
     const detailedListings = [];
     for (const listing of allListings) {
       // Assuming you want to find the order details for each active listing
-      // console.log(listing._id);
       const order = await Order.findById(listing._id);
       if (order?.orderStatus == 'running')
         detailedListings.push({
@@ -253,63 +240,6 @@ const activeListingsForDonor = asyncHandler(async function (req, res) {
   }
 })
 
-// const pendingListingsForDistributor=asyncHandler(async function(req,res){
-//   const {_id}=req.body;
-//   console.log("Id is:",_id);
-
-
-//   const user=await Distributor.find({_id}).select("-password -refreshToken");
-//     if (!user){
-//         throw new ApiError(401,"Invalid user Id,can't find any user with this userId");
-//     }
-//     // console.log("User:",user);
-//     // const runningOrders=user.order?.filter((item)=>item.orderStatus=="running");
-//     const runningOrders=user?.order?.map((item)=>{
-//       const singleOrder=await Order.findById(item);
-//       console.log("singleOrder",singleOrder);
-//       if (singleOrder.orderStatus=='running')
-//       {
-//         console.log(singleOrder)
-//         return singleOrder
-//       }
-//     })
-//     console.log("Running Orders:",runningOrders);
-//     res
-//     .status(200)
-//     .json(new ApiResponse(200,{runningOrders},"pending listings for asked distributor sent successfully"));
-// })
-
-// const pendingListingsForDistributor = asyncHandler(async function (req, res) {
-//   try {
-//     const { _id } = req.body;
-//     console.log("Id is:", _id);
-
-//     const user = await Distributor.find({ _id }).select("-password -refreshToken");
-//     if (!user) {
-//       throw new ApiError(401, "Invalid user Id, can't find any user with this userId");
-//     }
-
-//     const runningOrders = [];
-//     for (const item of user?.order || []) {
-//       const singleOrder = await Order.findById(item);
-//       console.log("singleOrder", singleOrder);
-//       if (singleOrder && singleOrder.orderStatus === 'running') {
-//         console.log(singleOrder);
-//         runningOrders.push(singleOrder);
-//       }
-//     }
-
-//     console.log("Running Orders:", runningOrders);
-
-//     res
-//       .status(200)
-//       .json(new ApiResponse(200, { runningOrders }, "pending listings for asked distributor sent successfully"));
-//   } catch (error) {
-//     // Handle errors appropriately
-//     console.error(error);
-//     res.status(500).json(new ApiResponse(500, null, "Internal Server Error"));
-//   }
-// });
 const pendingListingsForDistributor = asyncHandler(async function (req, res) {
   try {
     const { _id } = req.body;
