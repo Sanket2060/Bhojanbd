@@ -5,6 +5,7 @@ import { Donor } from '../models/donor.model.js'
 import { Distributor } from '../models/distributor.model.js'
 import { Order } from "../models/order.model.js";
 import { Bhojan } from "../models/bhojandetails.model.js";
+import 'dotenv/config'
 const addOrder = asyncHandler(async function (req, res) {
   const { _id, foodItems, platesAvailable, closingTime, title } = req.body;
 
@@ -169,7 +170,9 @@ const cancelOrderForDistributor = asyncHandler(async function (req, res) {
   if (!order) {
     throw new ApiError(401, "Invalid orderId");
   }
-  order.orderStatus = 'cancelled';
+  order.orderStatus = 'cancelled';   //majja ayena donor lai order feri list garna parni vayesi
+  // order.isActive=true  //
+
   await order.save({ validateBeforeSave: false })
 
   return res
@@ -226,7 +229,9 @@ const activeListingsForDonor = asyncHandler(async function (req, res) {
     for (const listing of allListings) {
       // Assuming you want to find the order details for each active listing
       const order = await Order.findById(listing._id);
-      if (order?.orderStatus == 'running')
+      if (order?.orderStatus == 'running') 
+        // ||
+      //  order?.isActive==true)  //aba orderStatus true vayo jastai after cancellation then herna milxa
         detailedListings.push({
           order
         });
@@ -303,6 +308,8 @@ const increaseOrderPoints=asyncHandler(async function(req,res){
       bhojan.numberOfPeopleFeed=parseInt(bhojan.numberOfPeopleFeed)+parseInt(foodForNumberOfPeople);
       await donor.save({ validateBeforeSave: false });
       await distributor.save({ validateBeforeSave: false });
+      await bhojan.save({validateBeforeSave:false});
+      // console.log(donor,distributor);
     }
    catch (error) {
     console.log("Error at increase order points",error);
