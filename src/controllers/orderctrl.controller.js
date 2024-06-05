@@ -56,6 +56,7 @@ const addDistributorToOrder = asyncHandler(async function (req, res) {
   //add acceptedBy to order
   order.acceptedBy = user._id;
   order.isActive = false; //as the user has accepted it
+  order.orderStatus='running';
   // console.log(user.order);
   // user.order.map((storedOrder)=>{             //array ma orders duplicate huna vayena->doesn't runs due to asyncronicity
   //   if (storedOrder==order._id){
@@ -171,8 +172,8 @@ const cancelOrderForDistributor = asyncHandler(async function (req, res) {
     throw new ApiError(401, "Invalid orderId");
   }
   order.orderStatus = 'cancelled';   //majja ayena donor lai order feri list garna parni vayesi
-  // order.isActive=true  //
-
+  order.isActive=true  //
+  order.acceptedBy=null;
   await order.save({ validateBeforeSave: false })
 
   return res
@@ -229,9 +230,9 @@ const activeListingsForDonor = asyncHandler(async function (req, res) {
     for (const listing of allListings) {
       // Assuming you want to find the order details for each active listing
       const order = await Order.findById(listing._id);
-      if (order?.orderStatus == 'running') 
-        // ||
-      //  order?.isActive==true)  //aba orderStatus true vayo jastai after cancellation then herna milxa
+      if (order?.orderStatus == 'running' 
+        ||
+       order?.isActive==true)  //aba orderStatus true vayo jastai after cancellation then herna milxa
         detailedListings.push({
           order
         });

@@ -21,7 +21,7 @@ const server = createServer(app);
 // });
 app.use(
   cors({
-    origin: "https://khana.me",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
