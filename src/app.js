@@ -21,8 +21,8 @@ const server = createServer(app);
 // });
 app.use(
   cors({
-    origin: "https://khana.me",
-    credentials: true,
+    origin: "https://bhojan-git-main-sanket2060s-projects.vercel.app", // Allow requests from this domain
+    credentials: true, // If you need to send cookies or authentication headers
   })
 );
 app.use(express.json({ limit: "16kb" }));
