@@ -6,6 +6,7 @@ import { uploadOnCloudinary } from '../utils/Cloudinary.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 import { Bhojan } from "../models/bhojandetails.model.js";
 import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 // const resend = new Resend(process.env.RESEND_API_KEY);
 const sendOTP = async (userEmail) => {
   console.log("User Email from sendOTP:", userEmail);
@@ -501,6 +502,7 @@ const LoginUser = asyncHandler(async (req, res) => {
 
 
 const LogoutUser = asyncHandler((req, res) => {
+  console.log("Logout request recieved");
   Donor.findByIdAndUpdate(
     req.user._id,      //user sent by verifyJWT middleware
     {
@@ -528,7 +530,8 @@ const LogoutUser = asyncHandler((req, res) => {
   //set cookies on browser to undefined
   const options = {   //only modifyable by server not by browser by anyone
     httpOnly: false,
-    secure: true
+    secure: true,
+    sameSite: "none"
   }
   res.
     status(200)
@@ -541,6 +544,55 @@ const LogoutUser = asyncHandler((req, res) => {
 
 })
 
+const googleLogin = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const decoded = jwt.decode(token, { complete: true });
+    const { email, name } = decoded.payload;
+
+    // Find or create user
+    let user = await Donor.findOne({ email }) || await Distributor.findOne({ email });
+    if (!user) {
+      user = await Donor.create({
+        email,
+        username: name,
+        password: Math.random().toString(36).slice(-8) // temporary random password
+      });
+    }
+
+    // Generate tokens
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
+
+    // Set cookies from backend
+    const options = {   //only modifyable by server not by browser by anyone
+    httpOnly: false,
+    secure: true
+  }
+    // Return user info similar to googleLogin
+    const apiResultUser = await Donor.findById(user._id).select("-password -refreshToken")
+    || await Distributor.findById(user._id).select("-password -refreshToken");
+
+    return res
+      .status(200)
+       .cookie("accessToken", accessToken, options) //accessToken Cookie
+    .cookie("refreshToken", refreshToken, options) //refreshToken Cookie
+     .json(
+      new ApiResponse(200,
+        //  user:loggedInUser,accessToken,refreshToken  //????{} missing-> sending multiple at a time???
+        apiResultUser
+        ,
+        "User logged in successfully"
+      )
+    )
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Google login failed" });
+  }
+});
 
 
-export { registerUser, verifyOTP, completeRegistration, LoginUser, LogoutUser }
+
+
+export { registerUser, verifyOTP, completeRegistration, LoginUser, LogoutUser,googleLogin }

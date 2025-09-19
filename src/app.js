@@ -6,19 +6,37 @@ import { Server } from "socket.io";
 const app = express();
 const server = createServer(app);
 // const io = new Server(server);
-// app.use(cors({
-//     origin: process.env.CORS_ORIGIN,   //providing cors to frontend
-//     credentials:true
 
-// }))
 // Initialize Socket.IO
-// const io = new Server(server, {
-//   cors: {
-//     origin: 'http://localhost:5173',
-//     methods: ['GET', 'POST'],
-//     credentials: true
-//   }
-// });
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+});
+server.listen(9090,()=>{
+  console.log("Socket server created successfully")
+})
+io.on("connection", (socket) => {
+  const { id, userDetails } = socket.handshake.query;
+  const user=JSON.parse(userDetails)
+  console.log("New user connected",user);
+
+  // Donor sends an order
+  socket.on("new_order", (orderData) => {
+    console.log("Order received:", orderData);
+
+  // Broadcast to all distributors
+    // io.of("/distributors").emit("new_order", orderData);
+    io.emit("new_order",orderData);
+  });
+
+
+  socket.on('disconnect', () => {
+  console.log('user disconnected');
+  });
+});
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -39,6 +57,7 @@ import orderRouter from "./routes/order.routes.js"; //afaile naam rakhne ho(defa
 app.use("/api/v1/order", orderRouter);
 
 import getData from "./routes/getData.routes.js";
+import { useReducer } from "react";
 app.use("/api/v1/getData", getData);
 
 // app.use((req, res, next) => {

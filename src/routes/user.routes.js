@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { registerUser,verifyOTP,completeRegistration,LoginUser,LogoutUser } from "../controllers/auth.controller.js";
+import { registerUser,verifyOTP,completeRegistration,LoginUser,LogoutUser,googleLogin } from "../controllers/auth.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+
 
   const router=Router();
   
@@ -28,6 +29,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 
   router.route('/login').post(LoginUser);
   router.route('/logout').post(verifyJWT,LogoutUser);
+  router.route('/auth/google').post(googleLogin);
 
   
   
