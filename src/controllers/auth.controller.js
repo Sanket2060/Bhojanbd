@@ -17,8 +17,8 @@ const sendOTP = async (userEmail) => {
       port: 587,
       secure: false, // Use `true` for port 465, `false` for all other ports
       auth: {
-        user: "sanketgbs.21@gmail.com",
-        pass: "lide mkhz uekg igbu",
+        user: process.env.email_user,
+        pass: process.env.email_password,
       },
     });
       console.log("Inside main otp logic");
