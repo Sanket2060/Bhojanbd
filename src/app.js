@@ -18,25 +18,38 @@ const io = new Server(server, {
 server.listen(9090,()=>{
   console.log("Socket server created successfully")
 })
+
+ io.of("/distributors").on("connection", (socket) => {
+  const { id, userDetails } = socket.handshake.query;
+  const user = JSON.parse(userDetails);
+
+  console.log("Distributor connected:", user);
+
+  socket.on("disconnect", () => {
+    console.log("Distributor disconnected");
+  });
+});
+
+// Root namespace: donors connect here
 io.on("connection", (socket) => {
   const { id, userDetails } = socket.handshake.query;
-  const user=JSON.parse(userDetails)
-  console.log("New user connected",user);
+  const user = JSON.parse(userDetails);
+
+  console.log("Donor connected:", user);
 
   // Donor sends an order
   socket.on("new_order", (orderData) => {
-    console.log("Order received:", orderData);
+    console.log("Order received from donor:", orderData);
 
-  // Broadcast to all distributors
-    // io.of("/distributors").emit("new_order", orderData);
-    io.emit("new_order",orderData);
+    // Broadcast ONLY to distributors namespace
+    io.of("/distributors").emit("new_order", orderData);
   });
 
-
-  socket.on('disconnect', () => {
-  console.log('user disconnected');
+  socket.on("disconnect", () => {
+    console.log("Donor disconnected");
   });
 });
+
 app.use(
   cors({
     origin: "http://localhost:5173",
