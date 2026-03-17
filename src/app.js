@@ -21,7 +21,7 @@ const server = createServer(app);
 // });
 app.use(
   cors({
-    origin: "https://bhojan-five.vercel.app", // Allow requests from this domain
+    origin: ["https://bhojan-five.vercel.app", "https://bhojan-portal1.vercel.app"], // Allow requests from these domains
     credentials: true, // If you need to send cookies or authentication headers
   })
 );
